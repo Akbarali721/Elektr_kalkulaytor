@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+
+  <title>Hisoblash kalkulyatori</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container mt-5" style="max-width: 540px;">
+    <h2 class="text-center mb-4">Elektr energiya kalkulyatori</h2>
+
+    <!-- Menu tugmalar -->
+    <ul class="nav nav-pills mb-4 justify-content-center" id="calcTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="tab-usage" data-bs-toggle="pill" data-bs-target="#pane-usage" type="button" role="tab"
+                title="Oylik sarf miqdoridan to‘lov summasini hisoblayman">
+          Sarfdan → To‘lov
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="tab-payment" data-bs-toggle="pill" data-bs-target="#pane-payment" type="button" role="tab"
+                title="To‘lov summasidan taxminiy kVt·soatni hisoblayman">
+          To‘lovdan → kVt·soat
+        </button>
+      </li>
+    </ul>
+
+    <div class="tab-content" id="calcTabsContent">
+      <!-- 1-qism: Sarfdan → To‘lov -->
+      <div class="tab-pane fade show active" id="pane-usage" role="tabpanel">
+        <form action="/result" method="post" class="border p-4 rounded">
+          <div class="mb-3">
+            <label for="usage" class="form-label">Oylik sarf (kVt·soat):</label>
+            <input type="number" class="form-control" name="usage" id="usage" min="0" required>
+          </div>
+          <div class="mb-3">
+            <label for="house_standard" class="form-label">Uy turi:</label>
+            <select class="form-select" name="house_type" id="house_standard" required>
+              <option value="standard">Oddiy uy</option>
+              <option value="electric">Elektr plitali uy</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">To‘lovni hisoblash</button>
+        </form>
+      </div>
+
+      <!-- 2-qism: To‘lov → kVt·soat -->
+      <div class="tab-pane fade" id="pane-payment" role="tabpanel">
+        <form action="/result" method="post" class="border p-4 rounded">
+          <div class="mb-3">
+            <label for="payment" class="form-label">Oylik to‘lov (so‘m):</label>
+            <input type="number" class="form-control" name="payment" id="payment" min="0" required>
+          </div>
+          <div class="mb-3">
+            <label for="house_electric" class="form-label">Uy turi:</label>
+            <select class="form-select" name="house_type" id="house_electric" required>
+              <option value="standard">Oddiy uy</option>
+              <option value="electric">Elektr plitali uy</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-success w-100">kVt·soatni hisoblash</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

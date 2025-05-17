@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+
+  <title>Elektr Kalkulyator</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    img { max-width: 150px; height: auto; }
+    .btn-calc { background-color: #0d6efd; color: white; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="container text-center mt-4">
+    <img src="/static/logo.png" alt="TEJANG logotipi" class="mb-3">
+    <h2 class="mb-4">Uyingizni elektr energiyasini hisoblang</h2>
+    <a href="/calculator" class="btn btn-calc btn-lg mb-4">Hisoblash</a>
+
+    <h5 class="fw-bold mt-3">2025 yil 1-may holatiga ko‘ra tariflar</h5>
+    <div class="row mt-3 text-start">
+      <div class="col-md-6">
+        <h6><strong>Oddiy uy:</strong></h6>
+        <ul>
+          <li>0–200 kVt·soat: 600 so‘m</li>
+          <li>201–1000 kVt·soat: 800 so‘m</li>
+          <li>1001–5000 kVt·soat: 1000 so‘m</li>
+          <li>5001–10 000 kVt·soat: 1500 so‘m</li>
+          <li>10 001+ kVt·soat: 2000 so‘m</li>
+        </ul>
+      </div>
+      <div class="col-md-6">
+        <h6><strong>Elektr plitali uy:</strong></h6>
+        <ul>
+          <li>0–250 kVt·soat: 500 so‘m</li>
+          <li>251–1000 kVt·soat: 900 so‘m</li>
+          <li>1001–5000 kVt·soat: 1400 so‘m</li>
+          <li>5001–10 000 kVt·soat: 1650 so‘m</li>
+          <li>10 001+ kVt·soat: 1900 so‘m</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

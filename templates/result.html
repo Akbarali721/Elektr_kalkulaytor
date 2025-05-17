@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+
+  <title>Hisoblash natijasi</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container mt-5" style="max-width: 540px;">
+    <h2 class="text-center mb-4">Hisoblash natijasi</h2>
+
+    {% if usage is defined and price is defined %}
+      <!-- Tafsilotlar -->
+      {% if breakdown %}
+        <div class="alert alert-info p-4">
+          <h5 class="mb-3">Hisoblash tafsilotlari:</h5>
+          <ul class="mb-3">
+            {% for item in breakdown %}
+              <li>{{ item.kwh }} kVt·soat × {{ item.rate }} so'm = {{ item.cost }} so'm</li>
+            {% endfor %}
+          </ul>
+          <p class="mb-0"><strong>Jami:</strong> {{ price }} so'm</p>
+        </div>
+      {% else %}
+        <!-- Fallback: agar breakdown bo'lmasa -->
+        <div class="alert alert-info p-4">
+          <p class="mb-2">Siz sarflagan: <strong>{{ usage }} kVt·soat</strong></p>
+          <p class="mb-0">To‘lov summasi: <strong class="text-success">{{ price }} so‘m</strong></p>
+        </div>
+      {% endif %}
+
+    {% elif payment is defined and kwh is defined %}
+      <div class="alert alert-success p-4">
+        <p class="mb-2">Siz to‘lagan: <strong>{{ payment }} so‘m</strong></p>
+        <p class="mb-0">Taxminiy olgan energiya: <strong class="text-primary">{{ kwh }} kVt·soat</strong></p>
+      </div>
+    {% else %}
+      <div class="alert alert-warning p-4">
+        <p>Natija topilmadi. Iltimos, qaytadan urinib ko‘ring.</p>
+      </div>
+    {% endif %}
+
+    <div class="d-flex justify-content-between mt-4">
+      <a href="/calculator" class="btn btn-secondary">Ortga</a>
+      <a href="/" class="btn btn-outline-primary">Bosh sahifa</a>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
