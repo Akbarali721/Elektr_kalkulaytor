@@ -1,0 +1,8 @@
+app = "Elektr Bot "       # <-- bu yerga Fly.io’da ro‘yxatdan o‘tgan app nomingizni yozing
+primary_region = "ams"      # yoki siz tanlagan region kodi
+
+[build]
+  builder = "paketobuildpacks/builder:python"
+
+[env]
+  PYTHON_ENV = "production"

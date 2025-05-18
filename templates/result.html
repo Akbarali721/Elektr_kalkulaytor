@@ -13,7 +13,7 @@
     <h2 class="text-center mb-4">Hisoblash natijasi</h2>
 
     {% if usage is defined and price is defined %}
-      <!-- Tafsilotlar -->
+      <!-- Sarf → To‘lov tafsilotlari -->
       {% if breakdown %}
         <div class="alert alert-info p-4">
           <h5 class="mb-3">Hisoblash tafsilotlari:</h5>
@@ -25,18 +25,27 @@
           <p class="mb-0"><strong>Jami:</strong> {{ price }} so'm</p>
         </div>
       {% else %}
-        <!-- Fallback: agar breakdown bo'lmasa -->
         <div class="alert alert-info p-4">
           <p class="mb-2">Siz sarflagan: <strong>{{ usage }} kVt·soat</strong></p>
           <p class="mb-0">To‘lov summasi: <strong class="text-success">{{ price }} so‘m</strong></p>
         </div>
       {% endif %}
 
-    {% elif payment is defined and kwh is defined %}
+    {% elif payment is defined and total_kwh is defined %}
+      <!-- To‘lov → Sarf tafsilotlari -->
       <div class="alert alert-success p-4">
-        <p class="mb-2">Siz to‘lagan: <strong>{{ payment }} so‘m</strong></p>
-        <p class="mb-0">Taxminiy olgan energiya: <strong class="text-primary">{{ kwh }} kVt·soat</strong></p>
+        <h5 class="mb-3">To‘lov tafsilotlari:</h5>
+        {% if breakdown %}
+          <ul class="mb-3">
+            {% for item in breakdown %}
+              <li>{{ item.kwh }} kVt·soat × {{ item.rate }} so'm = {{ item.cost }} so'm</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+        <p class="mb-2"><strong>Umumiy energiya:</strong> {{ total_kwh }} kVt·soat</p>
+        <p class="mb-0"><strong>Qolgan pul:</strong> {{ remaining_money }} so'm</p>
       </div>
+
     {% else %}
       <div class="alert alert-warning p-4">
         <p>Natija topilmadi. Iltimos, qaytadan urinib ko‘ring.</p>

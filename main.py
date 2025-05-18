@@ -32,36 +32,32 @@ async def result(
         breakdown = []
 
         if house_type == "standard":
-            # Standard uylar uchun tarif bosqichlari
             tiers = [
-                (200, 600),     # 0–200 kVt·s @600 so‘m
-                (800, 1000),    # 201–1000 kVt·s @1000 so‘m
-                (4000, 1500),   # 1001–5000 kVt·s @1500 so‘m
-                (5000, 1750),   # 5001–10000 kVt·s @1750 so‘m
-                (float('inf'), 2000),  # 10001+ kVt·s @2000 so‘m
+                (200, 600),
+                (300, 800),
+                (500, 1000),
+                (4000, 1500),
+                (5000, 1750),
+                (float('inf'), 2000),
             ]
         else:
-            # Elektr plitali uylar uchun
             tiers = [
-                (200, 300),     # 0–200 kVt·s @300 so‘m
-                (300, 800),     # 201–500 kVt·s @800 so‘m
-                (500, 1000),    # 501–1000 kVt·s @1000 so‘m
-                (4000, 1500),   # 1001–5000 kVt·s @1500 so‘m
-                (5000, 1750),   # 5001–10000 kVt·s @1750 so‘m
-                (float('inf'), 2000),  # 10001+ kVt·s @2000 so‘m
+                (200, 300),
+                (300, 400),
+                (500, 500),
+                (4000, 750),
+                (5000, 875),
+                (float('inf'), 1000),
             ]
 
         remaining = usage
         for limit, rate in tiers:
-            if remaining > limit:
-                cost = limit * rate
-                price += cost
-                breakdown.append({"kwh": limit, "rate": rate, "cost": cost})
-                remaining -= limit
-            else:
-                cost = remaining * rate
-                price += cost
-                breakdown.append({"kwh": remaining, "rate": rate, "cost": cost})
+            used = min(remaining, limit)
+            cost = used * rate
+            price += cost
+            breakdown.append({"kwh": used, "rate": rate, "cost": cost})
+            remaining -= used
+            if remaining <= 0:
                 break
 
         context.update({
@@ -70,12 +66,17 @@ async def result(
             "breakdown": breakdown,
         })
 
-    # 2. To‘lov → Sarf (ixtiyoriy, agar kerak bo‘lsa qo‘shing)
+    # 2. To‘lov → Sarf
     elif payment is not None:
+        remaining_money = payment
+        breakdown = []
+        total_kwh = 0.0
+
         if house_type == "standard":
             thresholds = [
                 (200, 600),
-                (800, 1000),
+                (300, 800),
+                (500, 1000),
                 (4000, 1500),
                 (5000, 1750),
                 (float('inf'), 2000),
@@ -83,27 +84,36 @@ async def result(
         else:
             thresholds = [
                 (200, 300),
-                (300, 800),
-                (500, 1000),
-                (4000, 1500),
-                (5000, 1750),
-                (float('inf'), 2000),
+                (300, 400),
+                (500, 500),
+                (4000, 750),
+                (5000, 875),
+                (float('inf'), 1000),
             ]
 
-        remaining = payment
-        kwh = 0
         for limit, rate in thresholds:
             max_cost = limit * rate
-            if remaining >= max_cost:
-                kwh += limit
-                remaining -= max_cost
+            if remaining_money >= max_cost:
+                # Full tier
+                breakdown.append({"kwh": limit, "rate": rate, "cost": max_cost})
+                total_kwh += limit
+                remaining_money -= max_cost
             else:
-                kwh += remaining // rate
+                # Partial tier
+                partial_kwh = round(remaining_money / rate, 2)
+                cost = partial_kwh * rate
+                breakdown.append({"kwh": partial_kwh, "rate": rate, "cost": cost})
+                total_kwh += partial_kwh
+                remaining_money -= cost
                 break
 
         context.update({
             "payment": payment,
-            "kwh": kwh,
+            "total_kwh": total_kwh,
+            "breakdown": breakdown,
+            "remaining_money": remaining_money,
         })
 
     return templates.TemplateResponse("result.html", context)
+
+# Note: 'standard' — oddiy uy, boshqasi — elektr plitali uy uchun
