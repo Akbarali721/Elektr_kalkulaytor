@@ -1,4 +1,3 @@
 fastapi[standard]
 uvicorn
 jinja2
-aiogram

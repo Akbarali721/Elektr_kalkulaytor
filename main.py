@@ -3,7 +3,9 @@ from fastapi import FastAPI, Request, Form
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+import os
 
+port = int(os.environ.get("PORT", 8080))
 app = FastAPI()
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -117,3 +119,6 @@ async def result(
     return templates.TemplateResponse("result.html", context)
 
 # Note: 'standard' — oddiy uy, boshqasi — elektr plitali uy uchun
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("main:app", host="0.0.0.0", port=port)
